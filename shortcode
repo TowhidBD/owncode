@@ -1,0 +1,39 @@
+// Shortcode Function
+<?php 
+//  Test Shortcodes For Alert
+function stock_alert_shortcode($atts, $content = null) {
+
+    extract(shortcode_atts(
+        array (
+            'type' => 'success',
+            'text' => ''
+        ), 
+        $atts
+    ));
+
+    return '<div class="alert alert-'.esc_attr($type).'" role="alert">'. esc_html($text).'</div>';
+    
+    
+  // Conditional Shortcode
+  
+    extract(shortcode_atts(
+        array (
+            'city' => ''
+        ), 
+        $atts
+    ));
+    if( $city == 'Dhaka'){
+      $message = (''.esc_html($city).' is the most populated city');
+    } elseif( $city == 'Sylhet') {
+      $message = (''.esc_html($city).'Sylhet is the most beutiful country');
+    } else {
+      $message = ('you do not added a city');
+    }    
+    return $message;
+}
+
+add_shortcode( alert, stock_alert_shortcode );
+
+// Shortcodes in text editor
+[alert type="warning" text="Hello I am learning shortcode"]
+[alert city="sylhet"]

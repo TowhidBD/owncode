@@ -1,0 +1,50 @@
+add_action( 'init', 'stock_theme_custom_post' );
+function stock_theme_custom_post() {
+    register_post_type( 'testimonial',
+        array(
+            'labels' => array(
+                'name' => __( 'testimonials' ),
+                'singular_name' => __( 'testimonial' )
+            ),
+            'supports' => array('title', 'editor', 'thumbnail', 'page-attributes'),
+            'public' => false,
+            'show_ui' => true
+        )
+    );
+}
+
+
+function post_list_shortcode($atts){
+    extract( shortcode_atts( array(
+        'count' => '',
+        'type' => 'post'
+    ), $atts) );
+     
+    $q = new WP_Query(
+        array('
+            posts_per_page' => $count, 
+            'post_type' => $type, 
+            'orderby' => 'menu_order',
+            'order' => 'ASC')
+        );      
+         
+    $list = '<div class="custom_post_list">';
+    while($q->have_posts()) : $q->the_post();
+        $idd = get_the_ID();
+        $custom_field = get_post_meta($idd, 'custom_field', true);
+        $post_content = get_the_content();
+        $list .= '
+        <div class="single_post_item">
+            <h2>'.get_the_title().'</h2>
+            <p>'.get_the_content().'</p>
+        </div>
+        ';        
+    endwhile;
+    $list.= '</div>';
+    wp_reset_query();
+    return $list;
+}
+add_shortcode('testimonial', 'post_list_shortcode');  
+
+
+[testimonial type="testimonial"]

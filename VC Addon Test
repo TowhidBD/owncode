@@ -1,0 +1,96 @@
+<?php
+/*
+Plugin Name: Asif Toolkit
+*/
+
+function stock_theme_custom_post() {
+    register_post_type( 'testimonial',
+        array(
+            'labels' => array(
+                'name' => __( 'testimonials' ),
+                'singular_name' => __( 'testimonial' )
+            ),
+            'supports' => array('title', 'editor', 'thumbnail', 'page-attributes'),
+            'public' => false,
+            'show_ui' => true
+        )
+    );
+}
+add_action( 'init', 'stock_theme_custom_post' );
+
+// Test Shortcode
+
+function post_list_shortcode($atts){
+    extract( shortcode_atts( array(
+        'count' => '-1',
+        'type'  => 'post',
+        'color'  => '#dd4d40',
+        'icon'  => '',
+		
+    ), $atts) );
+     
+    $q = new WP_Query(
+        array(
+			'posts_per_page' => $count, 
+            'post_type' => $type,
+		)
+    );      
+         
+    $list = '<ul>';
+    while($q->have_posts()) : $q->the_post();
+        $idd = get_the_ID();
+        $post_content = get_the_content();
+        $list .= '<li><a style="color:'.$color.'" href="'.get_permalink().'">';
+	
+		if(!empty($icon)) {
+			$list .='<i class="'.$icon.'"></i>';
+		}
+	
+		$list .=''.get_the_title().'</a></li>';
+	
+    endwhile;
+    $list.= '</ul>';
+    wp_reset_query();
+    return $list;
+}
+add_shortcode('post_list', 'post_list_shortcode'); 
+
+
+function asif_vc_postlist_addon() {
+	vc_map( array(
+      "name" => __( "Post list", "my-text-domain" ),
+      "base" => "post_list",
+      "category" => __( "Asif", "my-text-domain"),
+      "params" => array(
+         array(
+            "type" => "textfield",
+            "heading" => __( "Post type", "my-text-domain" ),
+            "param_name" => "type",
+            "value" => __( "post", "my-text-domain" ),
+            "description" => __( "Post type", "my-text-domain" )
+         ),
+         array(
+            "type" => "textfield",
+            "heading" => __( "Post count", "my-text-domain" ),
+            "param_name" => "count",
+            "value" => __( "-1", "my-text-domain" ),
+            "description" => __( "Type how many post want see", "my-text-domain" )
+         ),
+         array(
+            "type" => "colorpicker",
+            "heading" => __( "link color", "my-text-domain" ),
+            "param_name" => "color",
+            "value" => __( "#dd4d40", "my-text-domain" ),
+            "description" => __( "Select color", "my-text-domain" )
+         ),
+         array(
+            "type" => "iconpicker",
+            "heading" => __( "Icon", "my-text-domain" ),
+            "param_name" => "icon",
+            "description" => __( "Select link icon", "my-text-domain" )
+         )
+      )
+   ) );
+	
+}
+add_action('vc_before_init', 'asif_vc_postlist_addon');

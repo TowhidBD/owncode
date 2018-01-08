@@ -22,7 +22,7 @@ class stockVCExtendAddonClass {
         $theme_data = wp_get_theme();
         echo '
         <div class="notice notice-warning">
-          <p>'.sprintf(__('<strong>%s</strong> recommends <strong><a href="'.site_url().'/wp-admin/themes.php?page=tgmpa-install-plugins" target="_blank">Visual Composer</a></strong> plugin to be installed and activated on your site.', 'stock-aminulhchy'), $theme_data->get('Name')).'</p>
+          <p>'.sprintf(__('<strong>%s</strong> recommends <strong><a href="'.site_url().'/wp-admin/themes.php?page=tgmpa-install-plugins" target="_blank">Visual Composer</a></strong> plugin to be installed and activated on your site.', 'stock-asif'), $theme_data->get('Name')).'</p>
         </div>';
     }
 }

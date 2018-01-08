@@ -33,7 +33,7 @@ require_once( STOCK_ACC_PATH . 'theme-shortcodes/slides-shortcode.php');
 //Shortcodes depended on Visual Composer
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 if (is_plugin_active('js_composer/js_composer.php')){
-    require_once( STOCK_ACC_PATH . 'theme-shortcodes/slides-shortcode.php');
+    require_once( STOCK_ACC_PATH . 'theme-shortcodes/staff-shortcode.php');
 }
 //Registering stock toolkit files
 function stock_toolkit_files(){
